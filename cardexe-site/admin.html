@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PAINEL ADMIN — CARD.EXE</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:oklch(0.16 0.01 290);--fg:oklch(0.97 0.005 300);--card:oklch(0.21 0.012 290);--card2:oklch(0.26 0.012 290);--primary:oklch(0.74 0.15 300);--primary-fg:oklch(0.16 0.02 290);--muted:oklch(0.76 0.02 300);--border:oklch(1 0 0 / 11%);--input:oklch(1 0 0 / 16%);--aurora1:oklch(0.72 0.17 300);--aurora2:oklch(0.82 0.11 330)}
+*{box-sizing:border-box;border-color:var(--border)}
+body{margin:0;color:var(--fg);font-family:"Manrope",system-ui,sans-serif;background:radial-gradient(70% 40% at 50% 0%,oklch(0.45 0.22 315/.55),transparent 70%),var(--bg);min-height:100dvh}
+h1,h2,h3{font-family:"Sora",sans-serif;margin:0}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 60px}
+.login{text-align:center;padding-top:40px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+.card h3{font-size:13px;letter-spacing:.04em;margin-bottom:10px;color:var(--aurora1)}
+label{display:block;font-size:11px;color:var(--muted);margin:8px 0 4px;text-transform:uppercase;letter-spacing:.06em}
+input,textarea,select{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--fg);font-family:inherit;font-size:14px}
+textarea{min-height:70px;resize:vertical}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+.btn{appearance:none;border:0;cursor:pointer;font-family:"Sora",sans-serif;font-weight:700;border-radius:12px;padding:13px 16px;font-size:14px;width:100%;transition:.15s}
+.btn-primary{background:linear-gradient(90deg,var(--aurora1),var(--aurora2));color:var(--primary-fg);box-shadow:0 8px 24px oklch(0.6 0.2 310/.35)}
+.btn-ghost{background:var(--card2);color:var(--fg);border:1px solid var(--border)}
+.item{display:grid;grid-template-columns:1fr 1fr 90px 32px;gap:6px;margin-bottom:6px;align-items:center}
+.item input{padding:8px 10px;font-size:13px}
+.del{background:var(--card2);border:1px solid var(--border);color:var(--fg);border-radius:8px;height:34px;cursor:pointer}
+.check-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px}
+.check-row input{padding:8px 10px;font-size:12px}
+.small{font-size:11px;color:var(--muted);margin-top:4px}
+.actions{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="loginBox" class="login card">
+    <h1 style="font-size:20px;margin-bottom:12px">PAINEL ADMIN</h1>
+    <label>DIGITE A SENHA</label>
+    <input type="password" id="pass" placeholder="senha" onkeydown="if(event.key==='Enter')enter()"/>
+    <div class="actions"><button class="btn btn-primary" onclick="enter()">ENTRAR</button></div>
+  </div>
+
+  <div id="panel" class="hidden">
+    <h1 style="font-size:20px;margin-bottom:14px">PAINEL ADMIN — CARD.EXE</h1>
+
+    <div class="card">
+      <h3>LOGO / MASCARA (PNG)</h3>
+      <label>IMAGEM (cole base64 ou URL)</label>
+      <textarea id="logo" placeholder="data:image/png;base64,... ou https://.../logo.png"></textarea>
+      <p class="small">É o símbolo principal do site, exibido no centro do topo.</p>
+    </div>
+
+    <div class="card">
+      <h3>TEXTOS</h3>
+      <label>TÍTULO DO SITE</label><input id="title"/>
+      <label>SUBTÍTULO</label><input id="sub"/>
+      <label>BADGE (hero)</label><input id="badge"/>
+      <label>RODAPÉ (e-mail)</label><input id="foot"/>
+      <label>COPYRIGHT</label><input id="copyright"/>
+      <label>TEXTO — TÍTULO PRODUTO</label><input id="qProductTitle"/>
+      <label>TEXTO — DESC PRODUTO</label><input id="qProductDesc"/>
+      <label>TEXTO — TÍTULO BANDEIRA</label><input id="qBrandTitle"/>
+      <label>TEXTO — DESC BANDEIRA</label><input id="qBrandDesc"/>
+      <label>TEXTO — TÍTULO CARTÃO</label><input id="qCardTitle"/>
+      <label>TEXTO — DESC CARTÃO</label><input id="qCardDesc"/>
+      <label>HINT REVELAR</label><input id="revealHint"/>
+      <label>BOTÃO GERAR</label><input id="btnGenerate"/>
+      <label>BOTÃO PAGAR</label><input id="btnPay"/>
+      <div class="row">
+        <div><label>FEATURE 1</label><input id="feature_1"/></div>
+        <div><label>FEATURE 2</label><input id="feature_2"/></div>
+        <div><label>FEATURE 3</label><input id="feature_3"/></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>CORES DO TEMA</h3>
+      <div class="row">
+        <div><label>ACENTO 1</label><input id="acc" placeholder="oklch(...) ou #hex"/></div>
+        <div><label>ACENTO 2</label><input id="acc2" placeholder="oklch(...) ou #hex"/></div>
+        <div><label>FUNDO</label><input id="bg" placeholder="oklch(...) ou #hex"/></div>
+      </div>
+      <p class="small">Deixe vazio para manter o padrão.</p>
+    </div>
+
+    <div class="card">
+      <h3>PRODUTOS (nome | preço)</h3>
+      <div id="products"></div>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="addProduct()">+ adicionar produto</button>
+    </div>
+
+    <div class="card">
+      <h3>BANDEIRAS (nome | label | classe)</h3>
+      <div id="brands"></div>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="addBrand()">+ adicionar bandeira</button>
+    </div>
+
+    <div class="card">
+      <h3>LINKS DE CHECKOUT (produto + bandeira → URL)</h3>
+      <p class="small" style="margin-bottom:8px">Defina a URL do gateway para cada combinação. Chave automática: <code>produto_bandeira</code>.</p>
+      <div id="checkouts"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="generateIndex()">⬇ GERAR index.html NOVO</button>
+      <button class="btn btn-ghost" onclick="restoreDefault()">RESTAURAR PADRÃO</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASS="admin123";
+const DEFAULTS={
+  title:"CardExe — Cartões",sub:"Escolha banco e bandeira. Cartão gerado na hora.",
+  badge:"ANONIMATO",status:"Disponível",foot:"contato@cardexe.exemplo",
+  copyright:"© 2026 CardExe · Todos os direitos reservados",
+  qProductTitle:"Escolha o produto",qProductDesc:"Selecione o que você quer.",
+  qBrandTitle:"Escolha a bandeira",qBrandDesc:"Selecione a bandeira e veja o preço.",
+  qCardTitle:"Seu cartão",qCardDesc:"Gere um cartão para ver os dados aqui.",
+  revealHint:"Toque nos números para revelar.",btnGenerate:"Gerar cartão",btnPay:"Pagar",
+  feature_1:"Acesso rápido",feature_2:"100% seguro",feature_3:"Alta qualidade",
+  logo:"mascara.png",acc:"",acc2:"",bg:"",
+  products:[
+    {id:"itau",name:"Itaú",price:25},{id:"bradesco",name:"Bradesco",price:25},
+    {id:"santander",name:"Santander",price:25},{id:"caixa",name:"Caixa",price:25},
+    {id:"bb",name:"BB",price:25},{id:"nubank",name:"Nubank",price:25},
+    {id:"inter",name:"Inter",price:25},{id:"sicredi",name:"Sicredi",price:25}
+  ],
+  brands:[
+    {id:"master",name:"Mastercard",label:"MC",cls:"b-master"},
+    {id:"visa",name:"Visa",label:"VISA",cls:"b-visa"},
+    {id:"elo",name:"Elo",label:"ELO",cls:"b-elo"},
+    {id:"amex",name:"Amex",label:"AMEX",cls:"b-amex"}
+  ],
+  checkout:{}
+};
+let state=JSON.parse(JSON.stringify(DEFAULTS));
+
+function enter(){if(document.getElementById("pass").value===PASS){document.getElementById("loginBox").classList.add("hidden");document.getElementById("panel").classList.remove("hidden");load()}}
+function load(){
+  try{const s=localStorage.getItem("cardexe_admin");if(s)state=Object.assign(JSON.parse(JSON.stringify(DEFAULTS)),JSON.parse(s))}catch(e){}
+  for(const k of ["title","sub","badge","foot","copyright","qProductTitle","qProductDesc","qBrandTitle","qBrandDesc","qCardTitle","qCardDesc","revealHint","btnGenerate","btnPay","feature_1","feature_2","feature_3","logo","acc","acc2","bg"])
+    document.getElementById(k).value=state[k]??"";
+  renderProducts();renderBrands();renderCheckouts();
+}
+function save(){localStorage.setItem("cardexe_admin",JSON.stringify(state));collect()}
+function collect(){
+  for(const k of ["title","sub","badge","foot","copyright","qProductTitle","qProductDesc","qBrandTitle","qBrandDesc","qCardTitle","qCardDesc","revealHint","btnGenerate","btnPay","feature_1","feature_2","feature_3","logo","acc","acc2","bg"])
+    state[k]=document.getElementById(k).value;
+  state.products=[...document.querySelectorAll("#products .item")].map(r=>({id:r.children[0].value,name:r.children[1].value,price:+r.children[2].value||0})).filter(p=>p.id);
+  state.brands=[...document.querySelectorAll("#brands .item")].map(r=>({id:r.children[0].value,name:r.children[1].value,label:r.children[2].value,cls:r.children[3].value})).filter(b=>b.id);
+  state.checkout={};
+  [...document.querySelectorAll("#checkouts .check-row")].forEach(r=>{const v=r.children[2].value;if(v)state.checkout[r.children[0].value+"_"+r.children[1].value]=v});
+}
+function renderProducts(){
+  const c=document.getElementById("products");c.innerHTML="";
+  state.products.forEach(p=>{
+    const r=document.createElement("div");r.className="item";
+    r.innerHTML=`<input value="${p.id}" placeholder="id"/><input value="${p.name}" placeholder="nome"/><input type="number" value="${p.price}" placeholder="preço"/><button class="del" onclick="this.parentNode.remove()">✕</button>`;
+    c.appendChild(r);
+  });
+}
+function addProduct(){const r=document.createElement("div");r.className="item";r.innerHTML=`<input placeholder="id"/><input placeholder="nome"/><input type="number" placeholder="preço"/><button class="del" onclick="this.parentNode.remove()">✕</button>`;document.getElementById("products").appendChild(r)}
+function renderBrands(){
+  const c=document.getElementById("brands");c.innerHTML="";
+  state.brands.forEach(b=>{
+    const r=document.createElement("div");r.className="item";
+    r.innerHTML=`<input value="${b.id}" placeholder="id"/><input value="${b.name}" placeholder="nome"/><input value="${b.label}" placeholder="label"/><input value="${b.cls||""}" placeholder="classe"/><button class="del" onclick="this.parentNode.remove()">✕</button>`;
+    c.appendChild(r);
+  });
+}
+function addBrand(){const r=document.createElement("div");r.className="item";r.innerHTML=`<input placeholder="id"/><input placeholder="nome"/><input placeholder="label"/><input placeholder="classe"/><button class="del" onclick="this.parentNode.remove()">✕</button>`;document.getElementById("brands").appendChild(r)}
+function renderCheckouts(){
+  const c=document.getElementById("checkouts");c.innerHTML="";
+  state.products.forEach(p=>state.brands.forEach(b=>{
+    const key=p.id+"_"+b.id;
+    const r=document.createElement("div");r.className="check-row";
+    r.innerHTML=`<input value="${p.name}" disabled/><input value="${b.name}" disabled/><input value="${state.checkout[key]||""}" placeholder="https://..."/>`;
+    c.appendChild(r);
+  }));
+}
+function restoreDefault(){if(confirm("Restaurar tudo para o padrão?")){state=JSON.parse(JSON.stringify(DEFAULTS));save();load()}}
+
+function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function generateIndex(){
+  save();
+  const cfg=JSON.stringify(state,null,2);
+  const html=`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>${esc(state.title)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--radius:14px;--bg:oklch(0.16 0.01 290);--fg:oklch(0.97 0.005 300);--card:oklch(0.21 0.012 290);--card2:oklch(0.26 0.012 290);--primary:oklch(0.74 0.15 300);--primary-fg:oklch(0.16 0.02 290);--muted:oklch(0.76 0.02 300);--border:oklch(1 0 0 / 11%);--input:oklch(1 0 0 / 16%);--aurora1:oklch(0.72 0.17 300);--aurora2:oklch(0.82 0.11 330)}
+*{box-sizing:border-box;border-color:var(--border)}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--fg);font-family:"Manrope",system-ui,sans-serif;background:radial-gradient(70% 40% at 50% 0%,oklch(0.45 0.22 315/.55),transparent 70%),repeating-linear-gradient(0deg,oklch(1 0 0/.025) 0 1px,transparent 1px 3px),var(--bg);min-height:100dvh;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Sora",system-ui,sans-serif;margin:0}
+.text-gradient{background:linear-gradient(90deg,var(--aurora1),var(--aurora2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.wrap{max-width:520px;margin:0 auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
+.hero{padding:22px 0 8px;text-align:center}
+.hero .mask{width:min(70vw,220px);aspect-ratio:1;height:auto;margin:0 auto 14px;overflow:visible;border:0;border-radius:0;background:transparent;box-shadow:none;animation:float 5s ease-in-out infinite}
+.hero .mask img,.hero img.mask-img{display:block;width:100%;height:100%;object-fit:contain;border:0;border-radius:0;box-shadow:none;mix-blend-mode:screen}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hero h1{font-size:30px;font-weight:800;line-height:1.1}
+.hero p{color:var(--muted);margin:10px auto 0;max-width:34ch;font-size:14px}
+.features{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.feature{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:7px 12px;border-radius:999px;background:var(--card);border:1px solid var(--border)}
+.feature svg{width:14px;height:14px;color:var(--aurora1)}
+.steps{margin-top:22px;display:flex;flex-direction:column;gap:14px}
+.step{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;scroll-margin-top:12px}
+.step h2{font-size:14px;font-weight:700;letter-spacing:.02em;margin-bottom:4px}
+.step h2 .num{color:var(--aurora1);margin-right:6px}
+.step .desc{color:var(--muted);font-size:12px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.opt{position:relative;display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--border);cursor:pointer;transition:.15s;text-align:left}
+.opt:hover{border-color:color-mix(in oklab,var(--primary) 40%,var(--border))}
+.opt.sel{border-color:var(--primary);background:color-mix(in oklab,var(--primary) 14%,var(--card2));box-shadow:0 0 0 1px var(--primary),0 8px 24px oklch(0.6 0.2 310/.25)}
+.opt .name{font-weight:700;font-size:14px}
+.opt .tag{font-size:11px;color:var(--muted)}
+.opt .check{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--primary);color:var(--primary-fg);display:none;align-items:center;justify-content:center}
+.opt.sel .check{display:flex}
+.opt .check svg{width:12px;height:12px}
+.brands{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.brand-card{position:relative;display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:12px;background:var(--card2);border:1px solid var(--border);cursor:pointer;transition:.15s;text-align:left}
+.brand-card:hover{border-color:color-mix(in oklab,var(--primary) 40%,var(--border))}
+.brand-card.sel{border-color:var(--primary);background:color-mix(in oklab,var(--primary) 14%,var(--card2));box-shadow:0 0 0 1px var(--primary),0 8px 24px oklch(0.6 0.2 310/.25)}
+.brand-card .bname{font-weight:800;font-size:15px;letter-spacing:.02em}
+.brand-card .price{font-size:13px;color:var(--muted);font-weight:700}
+.brand-card .check{position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--primary);color:var(--primary-fg);display:none;align-items:center;justify-content:center}
+.brand-card.sel .check{display:flex}
+.brand-card .check svg{width:12px;height:12px}
+.b-visa{color:#1a1f71}.b-master{color:#eb001b}.b-elo{color:#ff8000}.b-amex{color:#2e77bc}
+.vcard-wrap{perspective:1000px}
+.vcard{position:relative;width:100%;aspect-ratio:1.586;border-radius:18px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;color:#fff;background:linear-gradient(135deg,#1a1030 0%,#2a1a4a 40%,#3a2a5a 100%);border:1px solid color-mix(in oklab,var(--primary) 40%,transparent);box-shadow:0 20px 50px oklch(0.4 0.2 300/.4),inset 0 1px 0 rgba(255,255,255,.08)}
+.vcard::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 80% -10%,rgba(255,255,255,.18),transparent 50%);pointer-events:none}
+.vcard .top{display:flex;justify-content:space-between;align-items:flex-start}
+.vcard .bank-label{font-family:"Sora";font-weight:800;font-size:15px;letter-spacing:.04em}
+.vcard .chip{width:44px;height:32px;border-radius:6px;background:linear-gradient(135deg,#f5d76e,#c9a227);box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
+.vcard .num{font-family:"Sora";font-size:clamp(18px,5.4vw,22px);letter-spacing:.12em;font-weight:700;display:flex;flex-wrap:wrap;gap:0 12px}
+.vcard .row{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.vcard .field{min-width:0}
+.vcard .lbl{font-size:9px;letter-spacing:.14em;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:2px}
+.vcard .val{font-size:14px;font-weight:700;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vcard .brand-mark{font-family:"Sora";font-weight:800;font-size:18px;letter-spacing:.02em}
+.blurred{filter:blur(3px);user-select:none;cursor:pointer;transition:filter .3s}
+.blurred.revealed{filter:none}
+.vcard .hint{font-size:11px;color:rgba(255,255,255,.55);margin-top:10px;display:flex;align-items:center;gap:6px}
+.vcard .hint svg{width:13px;height:13px;flex:none}
+.btn{appearance:none;border:0;cursor:pointer;font-family:"Sora",system-ui,sans-serif;font-weight:700;border-radius:12px;padding:14px 18px;font-size:15px;transition:.15s;width:100%}
+.btn-primary{background:linear-gradient(90deg,var(--aurora1),var(--aurora2));color:var(--primary-fg);box-shadow:0 8px 24px oklch(0.6 0.2 310/.35)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.actions{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+footer{margin-top:28px;text-align:center;color:var(--muted);font-size:12px}
+footer a{color:var(--muted);text-decoration:none}
+.admin-link{display:inline-block;margin-top:8px;font-size:10px;letter-spacing:.1em;color:color-mix(in oklab,var(--muted) 60%,transparent);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <img class="mask mask-img" id="heroImg" src="${esc(state.logo)}" alt="${esc(state.title)}">
+    <h1 id="tTitle">${esc(state.title).replace(/(prontos)/,"<span class='text-gradient'>$1</span>")}</h1>
+    <p id="tSub">${esc(state.sub)}</p>
+    <div class="features">
+      <span class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span id="f1">${esc(state.feature_1)}</span></span>
+      <span class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span id="f2">${esc(state.feature_2)}</span></span>
+      <span class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8L4 8.8h6.1z"/></svg><span id="f3">${esc(state.feature_3)}</span></span>
+    </div>
+  </section>
+  <div class="steps">
+    <section class="step" id="stepProduct">
+      <h2><span class="num">1</span><span id="qProductTitle">${esc(state.qProductTitle)}</span></h2>
+      <p class="desc" id="qProductDesc">${esc(state.qProductDesc)}</p>
+      <div class="grid" id="productGrid"></div>
+    </section>
+    <section class="step" id="stepBrand">
+      <h2><span class="num">2</span><span id="qBrandTitle">${esc(state.qBrandTitle)}</span></h2>
+      <p class="desc" id="qBrandDesc">${esc(state.qBrandDesc)}</p>
+      <div class="brands" id="brandGrid"></div>
+      <div class="actions"><button class="btn btn-primary" id="btnGenerate" onclick="generate()" disabled>${esc(state.btnGenerate)}</button></div>
+    </section>
+    <section class="step" id="stepCard">
+      <h2><span class="num">3</span><span id="qCardTitle">${esc(state.qCardTitle)}</span></h2>
+      <p class="desc" id="qCardDesc">${esc(state.qCardDesc)}</p>
+      <div class="vcard-wrap" id="vcardWrap" style="display:none">
+        <div class="vcard" id="vcard">
+          <div class="top"><span class="bank-label" id="vcBank">—</span><div class="chip"></div></div>
+          <div class="num" id="vcNum">••••&nbsp;&nbsp;••••&nbsp;&nbsp;••••&nbsp;&nbsp;••••</div>
+          <div class="row">
+            <div class="field"><div class="lbl">Titular</div><div class="val blurred" id="vcName" onclick="reveal(this)">—</div></div>
+            <div class="field"><div class="lbl">Validade</div><div class="val blurred" id="vcExp" onclick="reveal(this)">—</div></div>
+            <div class="field"><div class="lbl">CVV</div><div class="val blurred" id="vcCvv" onclick="reveal(this)">—</div></div>
+            <div class="brand-mark" id="vcBrand"></div>
+          </div>
+          <div class="hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span id="tRevealHint">${esc(state.revealHint)}</span></div>
+        </div>
+      </div>
+      <div class="actions" id="cardActions" style="display:none"><button class="btn btn-primary" id="btnPay" onclick="pay()">${esc(state.btnPay)}</button></div>
+    </section>
+  </div>
+  <footer>
+    <a href="mailto:${esc(state.foot)}" id="tFoot">${esc(state.foot)}</a>
+    <br><span id="tCopyright">${esc(state.copyright)}</span>
+    <a class="admin-link" href="admin.html">admin</a>
+  </footer>
+</div>
+<script>
+const CFG=${cfg};
+const PREFIX={master:"5",visa:"4",elo:"636",amex:"37"};
+let selProduct=null,selBrand=null,current=null;
+function C(k,d){return (CFG[k]!==undefined&&CFG[k]!=="")?CFG[k]:d}
+function brl(n){return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function applyCfg(){
+  document.title=C("title","CardExe — Cartões");
+  document.getElementById("heroImg").src=C("logo","mascara.png");
+  if(CFG.acc)document.documentElement.style.setProperty("--aurora1",CFG.acc);
+  if(CFG.acc2)document.documentElement.style.setProperty("--aurora2",CFG.acc2);
+  if(CFG.bg)document.documentElement.style.setProperty("--bg",CFG.bg);
+  renderProducts();renderBrands();
+}
+function renderProducts(){const g=document.getElementById("productGrid");g.innerHTML="";CFG.products.forEach(p=>{const d=document.createElement("button");d.className="opt";d.dataset.id=p.id;d.innerHTML='<span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span><span class="name">'+p.name+'</span><span class="tag">'+brl(p.price)+'</span>';d.onclick=()=>pickProduct(p.id);g.appendChild(d)})}
+function renderBrands(){const g=document.getElementById("brandGrid");g.innerHTML="";CFG.brands.forEach(b=>{const d=document.createElement("button");d.className="brand-card";d.dataset.id=b.id;const price=selProduct?(CFG.products.find(p=>p.id===selProduct)?.price??0):0;d.innerHTML='<span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></span><span class="bname '+(b.cls||"")+'">'+b.name+'</span><span class="price">'+(selProduct?brl(price):"")+'</span>';d.onclick=()=>pickBrand(b.id);g.appendChild(d)})}
+function pickProduct(id){selProduct=id;selBrand=null;current=null;[...document.querySelectorAll("#productGrid .opt")].forEach(o=>o.classList.toggle("sel",o.dataset.id===id));[...document.querySelectorAll("#brandGrid .brand-card")].forEach(o=>o.classList.remove("sel"));document.getElementById("vcardWrap").style.display="none";document.getElementById("cardActions").style.display="none";updateGenerate();renderBrands();document.getElementById("stepBrand").scrollIntoView({behavior:"smooth",block:"start"})}
+function pickBrand(id){if(!selProduct)return;selBrand=id;current=null;[...document.querySelectorAll("#brandGrid .brand-card")].forEach(o=>o.classList.toggle("sel",o.dataset.id===id));document.getElementById("vcardWrap").style.display="none";document.getElementById("cardActions").style.display="none";updateGenerate()}
+function updateGenerate(){document.getElementById("btnGenerate").disabled=!(selProduct&&selBrand)}
+function genNumber(prefix){let base=prefix;while(base.length<15)base+=Math.floor(Math.random()*10);let sum=0,alt=false;for(let i=base.length-1;i>=0;i--){let n=+base[i];if(alt){n*=2;if(n>9)n-=9}sum+=n;alt=!alt}return base+((10-(sum%10))%10)}
+const FIRST=["JOAO","MARIA","PEDRO","ANA","LUCAS","CARLA","RAFAEL","BEATRIZ"];const LAST=["SILVA","SOUZA","OLIVEIRA","COSTA","PEREIRA","ALMEIDA","FERNANDES","ROCHA"];
+function genCard(){const p=CFG.products.find(x=>x.id===selProduct);const b=CFG.brands.find(x=>x.id===selBrand);const num=genNumber(PREFIX[b.id]||"4");const name=FIRST[Math.floor(Math.random()*FIRST.length)]+" "+LAST[Math.floor(Math.random()*LAST.length)];const m=String(Math.floor(Math.random()*12)+1).padStart(2,"0");const y=String(Math.floor(Math.random()*5)+26);const cvv=String(Math.floor(Math.random()*900)+100);const key=selProduct+"_"+selBrand;return{num,name,exp:m+"/"+y,cvv,bank:p.name,brand:b.name,price:p.price,url:(CFG.checkout&&CFG.checkout[key])||""}}
+function fmtNum(n){return n.replace(/(\\d{4})(?=\\d)/g,"$1 ")}
+function generate(){if(!selProduct||!selBrand)return;current=genCard();document.getElementById("vcBank").textContent=current.bank;document.getElementById("vcBrand").textContent=current.brand;document.getElementById("vcNum").innerHTML=fmtNum(current.num).split(" ").map(s=>'<span class="blurred" onclick="reveal(this)">'+s+'</span>').join("&nbsp;");setField("vcName",current.name);setField("vcExp",current.exp);setField("vcCvv",current.cvv);document.getElementById("vcard").style.background="linear-gradient(135deg,#1a1030 0%,#2a1a4a 40%,#3a2a5a 100%)";document.getElementById("vcardWrap").style.display="block";document.getElementById("cardActions").style.display="flex";document.getElementById("stepCard").scrollIntoView({behavior:"smooth",block:"start"})}
+function setField(id,val){const el=document.getElementById(id);el.textContent=val;el.classList.remove("revealed")}
+function reveal(el){el.classList.add("revealed")}
+function pay(){if(!current)return;if(current.url)window.open(current.url,"_blank","noopener,noreferrer");else alert("Checkout ainda não configurado no admin.")}
+applyCfg();
+<\/script>
+</body>
+</html>`;
+  const blob=new Blob([html],{type:"text/html"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="index.html";a.click();
+}
+</script>
+</body>
+</html>
